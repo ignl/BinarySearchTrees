@@ -47,6 +47,8 @@ public class SplayTreeTest {
         Assert.assertEquals(splayTree.root.right.left.right.value, (Integer) 39);
         Assert.assertEquals(splayTree.root.right.left.left.value, (Integer) 20);
         Assert.assertEquals(splayTree.root.right.left.left.right.value, (Integer) 24);
+        
+        splayTree.printTreeInOrder();
     }
     
     @Test

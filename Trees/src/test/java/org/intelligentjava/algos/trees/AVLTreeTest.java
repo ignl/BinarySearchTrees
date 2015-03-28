@@ -48,6 +48,8 @@ public class AVLTreeTest {
         Assert.assertEquals(((AVLNode) rightSubtree.right).height, 0);
         Assert.assertEquals((int) rightSubtree.left.value, 21);
         Assert.assertEquals(((AVLNode) rightSubtree.left).height, 0);
+        
+        tree.printTreeInOrder();
     }
 
     @Test

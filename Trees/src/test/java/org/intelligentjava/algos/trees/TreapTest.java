@@ -41,6 +41,8 @@ public class TreapTest {
         Assert.assertEquals(treap.root.right.left.value, (Integer) 17);
         Assert.assertEquals(treap.root.left.value, (Integer) 15);
         Assert.assertEquals(treap.root.left.left.value, (Integer) 14);
+        
+        treap.printTreeInOrder(); // should be in order
     }
     
     @Test
