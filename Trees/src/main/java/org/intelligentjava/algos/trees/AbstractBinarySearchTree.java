@@ -148,9 +148,9 @@ public abstract class AbstractBinarySearchTree {
                 successorNode.left.parent = successorNode;
                 nodeToReturn = successorNode;
             }
+            size--;
         }
 
-        size--;
         return nodeToReturn;
     }
 
@@ -245,14 +245,18 @@ public abstract class AbstractBinarySearchTree {
     private void printTreeInOrder(Node entry) {
         if (entry != null) {
             printTreeInOrder(entry.left);
-            System.out.println(entry.value);
+            if (entry.value != null) {
+                System.out.println(entry.value);
+            }
             printTreeInOrder(entry.right);
         }
     }
 
     private void printTreePreOrder(Node entry) {
         if (entry != null) {
-            System.out.println(entry.value);
+            if (entry.value != null) {
+                System.out.println(entry.value);
+            }
             printTreeInOrder(entry.left);
             printTreeInOrder(entry.right);
         }
@@ -262,7 +266,9 @@ public abstract class AbstractBinarySearchTree {
         if (entry != null) {
             printTreeInOrder(entry.left);
             printTreeInOrder(entry.right);
-            System.out.println(entry.value);
+            if (entry.value != null) {
+                System.out.println(entry.value);
+            }
         }
     }
 
