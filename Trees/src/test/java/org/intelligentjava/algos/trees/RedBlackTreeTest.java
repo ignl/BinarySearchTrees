@@ -36,6 +36,7 @@ public class RedBlackTreeTest {
         Assert.assertEquals(((RedBlackNode)tree.search(8)).color, ColorEnum.RED);
         Assert.assertEquals(((RedBlackNode)tree.search(9)).left.value, (Integer)8);
         
+        // TODO test other red black tree properties too
         testTreeBSTProperties(tree.root);
     }
     
