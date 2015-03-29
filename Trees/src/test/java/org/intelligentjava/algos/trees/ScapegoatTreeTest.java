@@ -11,7 +11,31 @@ import org.junit.Test;
  * @created Jul 28, 2011
  *
  */
-public class ScapegoatTreeTest {
+public class ScapegoatTreeTest extends BaseBSTTest {
+    
+    @Test
+    public void testInsert() {
+        ScapegoatTree tree = new ScapegoatTree();
+        tree.insert(23);
+        tree.insert(13);
+        tree.insert(56);
+        tree.insert(1);
+        tree.insert(34);
+        tree.insert(56);
+        tree.insert(33);
+        tree.insert(21);
+        tree.insert(65);
+        tree.insert(45);
+        tree.insert(76);
+        tree.insert(99);
+        tree.insert(43);
+        tree.insert(46);
+        tree.insert(77);
+        tree.insert(88);
+        
+        Assert.assertEquals(16, tree.size);
+        testTreeBSTProperties(tree.root);
+    }
     
     @Test
     public void testGetSubtreeSize() {

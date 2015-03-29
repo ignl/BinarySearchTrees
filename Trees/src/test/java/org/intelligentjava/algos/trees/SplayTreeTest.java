@@ -11,7 +11,7 @@ import org.junit.Test;
  * @created Jul 19, 2011
  *
  */
-public class SplayTreeTest {
+public class SplayTreeTest extends BaseBSTTest {
     
     @Test
     public void testSearch() {
@@ -48,7 +48,7 @@ public class SplayTreeTest {
         Assert.assertEquals(splayTree.root.right.left.left.value, (Integer) 20);
         Assert.assertEquals(splayTree.root.right.left.left.right.value, (Integer) 24);
         
-        splayTree.printTreeInOrder();
+        testTreeBSTProperties(splayTree.root);
     }
     
     @Test
@@ -84,6 +84,8 @@ public class SplayTreeTest {
         Assert.assertNull(splayTree.root.right);
         Assert.assertEquals(splayTree.root.left.value, (Integer)11);
         Assert.assertEquals(splayTree.root.left.left.value, (Integer)10);
+        
+        testTreeBSTProperties(splayTree.root);
     }
 
     @Test

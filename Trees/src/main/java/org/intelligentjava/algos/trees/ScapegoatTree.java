@@ -19,7 +19,6 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
      */
     private int maxSize;
 
-    // TODO change
     private java.util.Stack<Node> nodeSequence = new java.util.Stack<Node>();
 
     /**
@@ -86,8 +85,8 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
             return root;
         }
 
-        int leftSize = getSubtreeSize(node.left);
-        int rightSize = getSubtreeSize(node.right);
+        int leftSize = node.left != null ? getSubtreeSize(node.left) : 0;
+        int rightSize = node.right != null ? getSubtreeSize(node.right) : 0;
         int sizeNode = getSubtreeSize(node);
         double coeff = sizeNode * alpha;
 
@@ -112,11 +111,12 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
             return 1;
         }
         int sum = 1;
-        if (node.left != null)
+        if (node.left != null) {
             sum += getSubtreeSize(node.left);
-        if (node.right != null)
+        }
+        if (node.right != null) {
             sum += getSubtreeSize(node.right);
-
+        }
         return sum;
     }
 

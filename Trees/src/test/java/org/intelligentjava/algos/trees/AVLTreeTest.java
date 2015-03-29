@@ -12,7 +12,7 @@ import org.junit.Test;
  * @created Jun 29, 2011
  *
  */
-public class AVLTreeTest {
+public class AVLTreeTest extends BaseBSTTest {
     
     @Test
     public void testDelete() {
@@ -27,6 +27,8 @@ public class AVLTreeTest {
         Assert.assertEquals(tree.root.value, (Integer)23); // new root
         Assert.assertEquals(tree.root.left.value, (Integer)20);
         Assert.assertEquals(tree.root.right.value, (Integer)25);
+        
+        testTreeBSTProperties(tree.root);
     }
     
     @Test
@@ -49,7 +51,7 @@ public class AVLTreeTest {
         Assert.assertEquals((int) rightSubtree.left.value, 21);
         Assert.assertEquals(((AVLNode) rightSubtree.left).height, 0);
         
-        tree.printTreeInOrder();
+        testTreeBSTProperties(tree.root);
     }
 
     @Test

@@ -10,7 +10,7 @@ import org.junit.Test;
  * @created May 6, 2011
  *
  */
-public class BinarySearchTreeTest {
+public class BinarySearchTreeTest extends BaseBSTTest {
     
     @Test
     public void testInsertDelete() {
@@ -27,6 +27,8 @@ public class BinarySearchTreeTest {
         tree.delete(1);
         Assert.assertFalse(tree.contains(16));
         Assert.assertFalse(tree.contains(1));
+        
+        testTreeBSTProperties(tree.root);
     }
     
     @Test
