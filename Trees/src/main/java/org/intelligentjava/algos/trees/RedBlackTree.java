@@ -16,7 +16,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
         BLACK
     };
 
-    private static final Node nilNode = new RedBlackNode(null, null, null, null, ColorEnum.BLACK);
+    protected static final Node nilNode = new RedBlackNode(null, null, null, null, ColorEnum.BLACK);
 
     /**
      * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#createNode(int, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node)
