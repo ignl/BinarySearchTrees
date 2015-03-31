@@ -13,27 +13,59 @@ import org.junit.Test;
  */
 public class ScapegoatTreeTest extends BaseBSTTest {
     
+    
     @Test
-    public void testInsert() {
+    public void testInsertSorted() {
         ScapegoatTree tree = new ScapegoatTree();
-        tree.insert(23);
-        tree.insert(13);
-        tree.insert(56);
         tree.insert(1);
-        tree.insert(34);
-        tree.insert(56);
-        tree.insert(33);
-        tree.insert(21);
-        tree.insert(65);
-        tree.insert(45);
-        tree.insert(76);
-        tree.insert(99);
-        tree.insert(43);
-        tree.insert(46);
-        tree.insert(77);
-        tree.insert(88);
+        tree.insert(2);
+        tree.insert(3);
+        tree.insert(4);
+        tree.insert(5);
+        tree.insert(6);
+        tree.insert(7);
+        tree.insert(8);
+        tree.insert(9);
+        tree.insert(10);
+        tree.insert(11);
+        tree.insert(12);
+        tree.insert(13);
+        tree.insert(14);
+        tree.insert(15);
+        tree.insert(16);
+        tree.insert(17);
+        tree.insert(18);
         
-        Assert.assertEquals(16, tree.size);
+        Assert.assertEquals(18, tree.size);
+        Assert.assertEquals((Integer)8, tree.root.value);
+        testTreeBSTProperties(tree.root);
+    }
+
+    @Test
+    public void testInsertSortedDesc() {
+        ScapegoatTree tree = new ScapegoatTree();
+        tree.insert(18);
+        tree.insert(17);
+        tree.insert(16);
+        tree.insert(15);
+        tree.insert(14);
+        tree.insert(13);
+        tree.insert(12);
+        tree.insert(11);
+        tree.insert(10);
+        tree.insert(9);
+        tree.insert(8);
+        tree.insert(7);
+        tree.insert(6);
+        tree.insert(5);
+        tree.insert(4);
+        tree.insert(3);
+        tree.insert(2);
+        tree.insert(1);
+        tree.printTree();
+        
+        Assert.assertEquals(18, tree.size);
+        Assert.assertEquals((Integer)11, tree.root.value);
         testTreeBSTProperties(tree.root);
     }
     
@@ -48,6 +80,16 @@ public class ScapegoatTreeTest extends BaseBSTTest {
         rightChild.right = rightGrandChild;
         ScapegoatTree tree = new ScapegoatTree();
         Assert.assertEquals(tree.getSubtreeSize(root), 4);
+    }
+    
+    @Test
+    public void testFindScapegoat() {
+        // TODO
+    }
+    
+    @Test
+    public void testRebuildTree() {
+        // TODO
     }
 
 }
