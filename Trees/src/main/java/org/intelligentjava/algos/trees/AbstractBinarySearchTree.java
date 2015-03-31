@@ -304,6 +304,49 @@ public abstract class AbstractBinarySearchTree {
             return parentNode;
         }
     }
+    
+    //-------------------------------- TREE PRINTING ------------------------------------
+
+    public void printTree() {
+        printSubtree(root);
+    }
+    
+    public void printSubtree(Node node) {
+        if (node.right != null) {
+            printTree(node.right, true, "");
+        }
+        printNodeValue(node);
+        if (node.left != null) {
+            printTree(node.left, false, "");
+        }
+    }
+    
+    private void printNodeValue(Node node) {
+        if (node.value == null) {
+            System.out.print("<null>");
+        } else {
+            System.out.print(node.value.toString());
+        }
+        System.out.println();
+    }
+    
+    private void printTree(Node node, boolean isRight, String indent) {
+        if (node.right != null) {
+            printTree(node.right, true, indent + (isRight ? "        " : " |      "));
+        }
+        System.out.print(indent);
+        if (isRight) {
+            System.out.print(" /");
+        } else {
+            System.out.print(" \\");
+        }
+        System.out.print("----- ");
+        printNodeValue(node);
+        if (node.left != null) {
+            printTree(node.left, false, indent + (isRight ? " |      " : "        "));
+        }
+    }
+
 
     protected static class Node {
         public Node(Integer value, Node parent, Node left, Node right) {
