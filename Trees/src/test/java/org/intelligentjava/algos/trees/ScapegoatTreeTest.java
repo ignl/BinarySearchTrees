@@ -37,7 +37,7 @@ public class ScapegoatTreeTest extends BaseBSTTest {
         tree.insert(18);
         
         Assert.assertEquals(18, tree.size);
-        Assert.assertEquals((Integer)8, tree.root.value);
+        Assert.assertEquals((Integer)5, tree.root.value);
         testTreeBSTProperties(tree.root);
     }
 
@@ -65,9 +65,66 @@ public class ScapegoatTreeTest extends BaseBSTTest {
         tree.printTree();
         
         Assert.assertEquals(18, tree.size);
-        Assert.assertEquals((Integer)11, tree.root.value);
+        Assert.assertEquals((Integer)12, tree.root.value);
         testTreeBSTProperties(tree.root);
     }
+    
+    
+    @Test
+    public void testDeleteSortedDesc() {
+        ScapegoatTree tree = new ScapegoatTree();
+        tree.insert(18);
+        tree.insert(17);
+        tree.insert(16);
+        tree.insert(15);
+        tree.insert(14);
+        tree.insert(13);
+        tree.insert(12);
+        tree.insert(11);
+        tree.insert(10);
+        tree.insert(9);
+        tree.insert(8);
+        tree.insert(7);
+        tree.insert(6);
+        tree.insert(5);
+        tree.insert(4);
+        tree.insert(3);
+        tree.insert(2);
+        tree.insert(1);
+        tree.printTree();
+        
+        tree.delete(18);
+        tree.delete(17);
+        tree.delete(15);
+        tree.delete(14);
+        tree.delete(12);
+        tree.delete(10);
+        tree.delete(8);
+        tree.printTree();
+        
+        Assert.assertEquals(11, tree.size);
+        Assert.assertEquals((Integer)13, tree.root.value);
+        testTreeBSTProperties(tree.root);
+    }
+    
+    @Test
+    public void testBuildBigTree() {
+        ScapegoatTree tree = new ScapegoatTree(0.95);
+        for (int i = 0; i < 100; i++) {
+            tree.insert(i);
+        }
+        tree.printTree();
+        Assert.assertEquals(100, tree.size);
+        testTreeBSTProperties(tree.root);
+        
+        for (int i = 0; i < 50; i++) {
+            tree.delete(i);
+        }
+        tree.printTree();
+        Assert.assertEquals(50, tree.size);
+        testTreeBSTProperties(tree.root);
+    }
+    
     
     @Test
     public void testGetSubtreeSize() {
