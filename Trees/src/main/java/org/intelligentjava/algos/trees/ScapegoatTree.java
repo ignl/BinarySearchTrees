@@ -16,9 +16,26 @@ import org.intelligentjava.algos.trees.utils.MathUtils;
 public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
 
     /** Alpha parameter. */
-    private static double alpha = 0.5;
+    private double alpha = 0.57;
     
     private int maxSize = 0;
+    
+    /**
+     * Constructor.
+     */
+    public ScapegoatTree() {
+        super();
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param alpha Alpha parameter.
+     */
+    public ScapegoatTree(double alpha) {
+        super();
+        this.alpha = alpha;
+    }
 
     /**
      * {@inheritDoc}
@@ -61,11 +78,11 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
      */
     @Override
     public Node delete(int element) {
-        Node deletedNode = super.delete(element);
+        Node replaceNode = super.delete(element);
         if (getSize() < alpha * maxSize) {
-            rebuildTree(getSize(), root);
+            root = rebuildTree(getSize(), root);
         }
-        return deletedNode;
+        return replaceNode;
     }
     
     /**
@@ -113,6 +130,7 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
         if (start > end) {
             return null;
         }
+
         // middle becomes root of subtree instead of scapegoat
         Node node = nodes.get(middle);
         
