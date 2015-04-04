@@ -68,7 +68,6 @@ public abstract class AbstractBinarySearchTree {
         Node insertParentNode = null;
         Node searchTempNode = root;
         while (searchTempNode != null && searchTempNode.value != null) {
-            saveBreadCrumbs(searchTempNode);
             insertParentNode = searchTempNode;
             if (element < searchTempNode.value) {
                 searchTempNode = searchTempNode.left;
@@ -104,20 +103,6 @@ public abstract class AbstractBinarySearchTree {
         } else {
             return null;
         }
-    }
-
-    /**
-     * This method gets all nodes from insert() method. For simple search tree
-     * there is no need to track all path from root to new inserted node, so
-     * this method is empty, but if other types of trees needs it then they can
-     * override this method and save all nodes to memory.
-     * 
-     * @param node
-     *            Node that is provided by insert() method when searching a
-     *            place for a new node.
-     */
-    protected void saveBreadCrumbs(Node node) {
-
     }
 
     /**
