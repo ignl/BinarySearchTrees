@@ -20,14 +20,6 @@ import org.intelligentjava.algos.trees.utils.MathUtils;
 public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
 
     /**
-     * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#createNode(int, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node)
-     */
-    @Override
-    protected Node createNode(int value, Node parent, Node left, Node right) {
-        return new AVLNode(value, parent, left, right);
-    }
-    
-    /**
      * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#insert(int)
      * 
      *      AVL tree insert method also balances tree if needed. Additional
@@ -52,6 +44,14 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
         rebalance((AVLNode)deleteNode.parent);
         return successorNode;
     }
+    
+    /**
+     * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#createNode(int, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node)
+     */
+    @Override
+    protected Node createNode(int value, Node parent, Node left, Node right) {
+        return new AVLNode(value, parent, left, right);
+    }
 
     /**
      * Go up from inserted node, and update height and balance informations if needed.
@@ -62,8 +62,6 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
     private void rebalance(AVLNode node) {
         while (node != null) {
             
-            updateHeight(node);
-
             Node parent = node.parent;
             
             int leftHeight = (node.left == null) ? -1 : ((AVLNode) node.left).height;
@@ -71,21 +69,23 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
             int nodeBalance = rightHeight - leftHeight;
             // rebalance (-2 means left subtree outgrow, 2 means right subtree)
             if (nodeBalance == 2) {
-                if (node.right.left == null && node.right.right != null) {
-                    avlRotateLeft(node);
+                if (node.right.right != null) {
+                    node = (AVLNode)avlRotateLeft(node);
                     break;
                 } else {
-                    doubleRotateRightLeft(node);
+                    node = (AVLNode)doubleRotateRightLeft(node);
                     break;
                 }
             } else if (nodeBalance == -2) {
-                if (node.left.right == null && node.left.left != null) {
-                    avlRotateRight(node);
+                if (node.left.left != null) {
+                    node = (AVLNode)avlRotateRight(node);
                     break;
                 } else {
-                    doubleRotateLeftRight(node);
+                    node = (AVLNode)doubleRotateLeftRight(node);
                     break;
                 }
+            } else {
+                updateHeight(node);
             }
             
             node = (AVLNode)parent;
@@ -161,4 +161,44 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
         }
     }
 
+    public void printTree() {
+        printSubtree(root);
+    }
+    
+    public void printSubtree(Node node) {
+        if (node.right != null) {
+            printTree(node.right, true, "");
+        }
+        printNodeValue(node);
+        if (node.left != null) {
+            printTree(node.left, false, "");
+        }
+    }
+    
+    private void printNodeValue(Node node) {
+        if (node.value == null) {
+            System.out.print("<null>");
+        } else {
+            System.out.print(node.value.toString());
+            System.out.print(" (" + ((AVLNode)node).height + ")");
+        }
+        System.out.println();
+    }
+    
+    private void printTree(Node node, boolean isRight, String indent) {
+        if (node.right != null) {
+            printTree(node.right, true, indent + (isRight ? "        " : " |      "));
+        }
+        System.out.print(indent);
+        if (isRight) {
+            System.out.print(" /");
+        } else {
+            System.out.print(" \\");
+        }
+        System.out.print("----- ");
+        printNodeValue(node);
+        if (node.left != null) {
+            printTree(node.left, false, indent + (isRight ? " |      " : "        "));
+        }
+    }
 }
