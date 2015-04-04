@@ -19,14 +19,6 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
     protected static final Node nilNode = new RedBlackNode(null, null, null, null, ColorEnum.BLACK);
 
     /**
-     * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#createNode(int, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node)
-     */
-    @Override
-    protected Node createNode(int value, Node parent, Node left, Node right) {
-        return new RedBlackNode(value, parent, left, right, ColorEnum.RED);
-    }
-
-    /**
      * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#insert(int)
      */
     @Override
@@ -81,6 +73,14 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
         }
 
         return replaceNode;
+    }
+    
+    /**
+     * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#createNode(int, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node)
+     */
+    @Override
+    protected Node createNode(int value, Node parent, Node left, Node right) {
+        return new RedBlackNode(value, parent, left, right, ColorEnum.RED);
     }
     
     /**

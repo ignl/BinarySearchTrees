@@ -10,14 +10,6 @@ package org.intelligentjava.algos.trees;
 public class SplayTree extends AbstractSelfBalancingBinarySearchTree {
 
     /**
-     * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#createNode(int, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node)
-     */
-    @Override
-    protected Node createNode(int value, Node parent, Node left, Node right) {
-        return new Node(value, parent, left, right);
-    }
-
-    /**
      * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#search(int)
      */
     @Override
@@ -55,6 +47,14 @@ public class SplayTree extends AbstractSelfBalancingBinarySearchTree {
             }
         }
         return successor;
+    }
+    
+    /**
+     * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#createNode(int, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node, org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node)
+     */
+    @Override
+    protected Node createNode(int value, Node parent, Node left, Node right) {
+        return new Node(value, parent, left, right);
     }
 
     /**

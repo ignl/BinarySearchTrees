@@ -16,17 +16,6 @@ public class Treap extends AbstractSelfBalancingBinarySearchTree {
     private Random random = new Random(System.currentTimeMillis());
 
     /**
-     * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#createNode(int,
-     *      org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node,
-     *      org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node,
-     *      org.intelligentjava.algos.trees.AbstractBinarySearchTree.Node)
-     */
-    @Override
-    protected Node createNode(int value, Node parent, Node left, Node right) {
-        return new TreapNode(value, parent, left, right, random.nextInt(10000));
-    }
-
-    /**
      * Insert same as normal binary search tree first, just TreapNode will have random number - priority. Then performs
      * rotations up until root if priority of child is larger than priority of parent.
      * 
@@ -65,6 +54,14 @@ public class Treap extends AbstractSelfBalancingBinarySearchTree {
             return replaceNode;
         }
         return null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Node createNode(int value, Node parent, Node left, Node right) {
+        return new TreapNode(value, parent, left, right, random.nextInt(10000));
     }
 
     /**

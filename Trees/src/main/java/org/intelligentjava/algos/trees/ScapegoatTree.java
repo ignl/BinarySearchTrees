@@ -41,14 +41,6 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
      * {@inheritDoc}
      */
     @Override
-    protected Node createNode(int value, Node parent, Node left, Node right) {
-        return new Node(value, parent, left, right);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Node insert(int element) {
         Node inserted = super.insert(element);
         int height = getNodeHeight(inserted);
@@ -83,6 +75,14 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
             root = rebuildTree(getSize(), root);
         }
         return replaceNode;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Node createNode(int value, Node parent, Node left, Node right) {
+        return new Node(value, parent, left, right);
     }
     
     /**
