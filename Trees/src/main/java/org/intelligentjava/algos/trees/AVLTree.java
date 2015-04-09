@@ -40,9 +40,20 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
     @Override
     public Node delete(int element) {
         Node deleteNode = super.search(element);
-        Node successorNode = super.delete(deleteNode);
-        rebalance((AVLNode)deleteNode.parent);
-        return successorNode;
+        if (deleteNode != null) {
+            Node successorNode = super.delete(deleteNode);
+            if (successorNode != null) {
+                // if replaced from getMinimum(deleteNode.right) then come back there and update heights
+                AVLNode minimum = successorNode.right != null ? (AVLNode)getMinimum(successorNode.right) : (AVLNode)successorNode;
+                recomputeHeight(minimum);
+                rebalance((AVLNode)minimum);
+            } else {
+                recomputeHeight((AVLNode)deleteNode.parent);
+                rebalance((AVLNode)deleteNode.parent);
+            }
+            return successorNode;
+        }
+        return null;
     }
     
     /**
@@ -131,6 +142,30 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
         node.left = avlRotateLeft(node.left);
         return avlRotateRight(node);
     }
+    
+    /**
+     * Recomputes height information from the node and up for all of parents. It needs to be done after delete.
+     */
+    private void recomputeHeight(AVLNode node) {
+       while (node != null) {
+          node.height = maxHeight((AVLNode)node.left, (AVLNode)node.right) + 1;
+          node = (AVLNode)node.parent;
+       }
+    }
+    
+    /**
+     * Returns higher height of 2 nodes. 
+     */
+    private int maxHeight(AVLNode node1, AVLNode node2) {
+        if (node1 != null && node2 != null) {
+            return node1.height > node2.height ? node1.height : node2.height;
+        } else if (node1 == null) {
+            return node2 != null ? node2.height : -1;
+        } else if (node2 == null) {
+            return node1 != null ? node1.height : -1;
+        }
+        return -1;
+    }
 
     /**
      * Updates height and balance of the node.
@@ -161,44 +196,4 @@ public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
         }
     }
 
-    public void printTree() {
-        printSubtree(root);
-    }
-    
-    public void printSubtree(Node node) {
-        if (node.right != null) {
-            printTree(node.right, true, "");
-        }
-        printNodeValue(node);
-        if (node.left != null) {
-            printTree(node.left, false, "");
-        }
-    }
-    
-    private void printNodeValue(Node node) {
-        if (node.value == null) {
-            System.out.print("<null>");
-        } else {
-            System.out.print(node.value.toString());
-            System.out.print(" (" + ((AVLNode)node).height + ")");
-        }
-        System.out.println();
-    }
-    
-    private void printTree(Node node, boolean isRight, String indent) {
-        if (node.right != null) {
-            printTree(node.right, true, indent + (isRight ? "        " : " |      "));
-        }
-        System.out.print(indent);
-        if (isRight) {
-            System.out.print(" /");
-        } else {
-            System.out.print(" \\");
-        }
-        System.out.print("----- ");
-        printNodeValue(node);
-        if (node.left != null) {
-            printTree(node.left, false, indent + (isRight ? " |      " : "        "));
-        }
-    }
 }

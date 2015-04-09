@@ -2,6 +2,7 @@ package org.intelligentjava.algos.trees;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import org.intelligentjava.algos.trees.utils.MathUtils;
 
@@ -71,8 +72,9 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
     @Override
     public Node delete(int element) {
         Node replaceNode = super.delete(element);
-        if (getSize() < alpha * maxSize) {
+        if (getSize() <= alpha * maxSize) {
             root = rebuildTree(getSize(), root);
+            maxSize = getSize();
         }
         return replaceNode;
     }
@@ -118,7 +120,27 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
      */
     protected Node rebuildTree(int size, Node scapegoat) {
         List<Node> nodes = new ArrayList<Node>();
-        flattenTree(scapegoat, nodes);
+        
+        // flatten tree without recursion
+        Node currentNode = scapegoat;
+        boolean done = false;
+        Stack<Node> stack = new Stack<>();
+        while (!done) {
+            if (currentNode != null) {
+                stack.push(currentNode);
+                currentNode = currentNode.left;
+            } else {
+                if (!stack.isEmpty()) {
+                    currentNode = stack.pop();
+                    nodes.add(currentNode);
+                    currentNode = currentNode.right;
+                } else {
+                    done = true;
+                }
+            }
+        }
+        
+        // build tree from flattened list of nodes
         return buildTree(nodes, 0, size - 1);
     }
     
@@ -148,18 +170,6 @@ public class ScapegoatTree extends AbstractSelfBalancingBinarySearchTree {
         return node;
     }
     
-    /**
-     * Flatten tree function. Put whole subtree into list of nodes.
-     */
-    private void flattenTree(Node subtreeRoot, List<Node> nodes) {
-        if (subtreeRoot == null) {
-            return;
-        }
-        flattenTree(subtreeRoot.left, nodes);
-        nodes.add(subtreeRoot);
-        flattenTree(subtreeRoot.right, nodes);
-    }
-
     /**
      * @return Node's sibling.
      */

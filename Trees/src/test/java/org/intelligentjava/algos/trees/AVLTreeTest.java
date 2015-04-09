@@ -25,6 +25,7 @@ public class AVLTreeTest extends BaseBSTTest {
         tree.delete(15); // root is now unbalanced rotation performed
         Assert.assertEquals(tree.size, 3);
         Assert.assertEquals(tree.root.value, (Integer)23); // new root
+        Assert.assertEquals(((AVLNode)tree.root).height, 1); // new root
         Assert.assertEquals(tree.root.left.value, (Integer)20);
         Assert.assertEquals(tree.root.right.value, (Integer)25);
         

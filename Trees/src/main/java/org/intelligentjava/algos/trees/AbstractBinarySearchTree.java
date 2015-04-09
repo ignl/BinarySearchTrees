@@ -14,7 +14,7 @@ package org.intelligentjava.algos.trees;
 public abstract class AbstractBinarySearchTree {
 
     /** Root node where whole tree starts. */
-    protected Node root;
+    public Node root;
 
     /** Tree size. */
     protected int size;
@@ -115,28 +115,31 @@ public abstract class AbstractBinarySearchTree {
      *         delete was not found.
      */
     protected Node delete(Node deleteNode) {
-        Node nodeToReturn = null;
         if (deleteNode != null) {
-            if (deleteNode.left == null) {
-                nodeToReturn = transplant(deleteNode, deleteNode.right);
-            } else if (deleteNode.right == null) {
-                nodeToReturn = transplant(deleteNode, deleteNode.left);
-            } else {
-                Node successorNode = getMinimum(deleteNode.right);
-                if (successorNode.parent != deleteNode) {
-                    transplant(successorNode, successorNode.right);
-                    successorNode.right = deleteNode.right;
-                    successorNode.right.parent = successorNode;
+            Node nodeToReturn = null;
+            if (deleteNode != null) {
+                if (deleteNode.left == null) {
+                    nodeToReturn = transplant(deleteNode, deleteNode.right);
+                } else if (deleteNode.right == null) {
+                    nodeToReturn = transplant(deleteNode, deleteNode.left);
+                } else {
+                    Node successorNode = getMinimum(deleteNode.right);
+                    if (successorNode.parent != deleteNode) {
+                        transplant(successorNode, successorNode.right);
+                        successorNode.right = deleteNode.right;
+                        successorNode.right.parent = successorNode;
+                    }
+                    transplant(deleteNode, successorNode);
+                    successorNode.left = deleteNode.left;
+                    successorNode.left.parent = successorNode;
+                    nodeToReturn = successorNode;
                 }
-                transplant(deleteNode, successorNode);
-                successorNode.left = deleteNode.left;
-                successorNode.left.parent = successorNode;
-                nodeToReturn = successorNode;
+                size--;
             }
-            size--;
+    
+            return nodeToReturn;
         }
-
-        return nodeToReturn;
+        return null;
     }
 
     /**
@@ -333,7 +336,7 @@ public abstract class AbstractBinarySearchTree {
     }
 
 
-    protected static class Node {
+    public static class Node {
         public Node(Integer value, Node parent, Node left, Node right) {
             super();
             this.value = value;

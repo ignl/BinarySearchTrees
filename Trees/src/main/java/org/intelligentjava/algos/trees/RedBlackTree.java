@@ -1,7 +1,5 @@
 package org.intelligentjava.algos.trees;
 
-
-
 /**
  * Red-Black tree implementation. From Introduction to Algorithms 3rd edition.
  * 
@@ -16,7 +14,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
         BLACK
     };
 
-    protected static final Node nilNode = new RedBlackNode(null, null, null, null, ColorEnum.BLACK);
+    protected static final RedBlackNode nilNode = new RedBlackNode(null, null, null, null, ColorEnum.BLACK);
 
     /**
      * @see org.intelligentjava.algos.trees.AbstractBinarySearchTree#insert(int)
@@ -38,11 +36,11 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
      */
     @Override
     protected Node delete(Node deleteNode) {
-        Node removedOrMovedNode = deleteNode; // same as deleteNode if it has only one child, and otherwise it replaces deleteNode
-        ColorEnum removedOrMovedNodeColor = ((RedBlackNode)removedOrMovedNode).color;
         Node replaceNode = null; // track node that replaces removedOrMovedNode
+        if (deleteNode != null && deleteNode != nilNode) {
+            Node removedOrMovedNode = deleteNode; // same as deleteNode if it has only one child, and otherwise it replaces deleteNode
+            ColorEnum removedOrMovedNodeColor = ((RedBlackNode)removedOrMovedNode).color;
         
-        if (deleteNode != null) {
             if (deleteNode.left == nilNode) {
                 replaceNode = deleteNode.right;
                 rbTreeTransplant(deleteNode, deleteNode.right);
@@ -52,7 +50,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
             } else {
                 removedOrMovedNode = getMinimum(deleteNode.right);
                 removedOrMovedNodeColor = ((RedBlackNode)removedOrMovedNode).color;
-                replaceNode = removedOrMovedNode.left;
+                replaceNode = removedOrMovedNode.right;
                 if (removedOrMovedNode.parent == deleteNode) {
                     replaceNode.parent = removedOrMovedNode;
                 } else {
@@ -71,7 +69,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
                 deleteRBFixup((RedBlackNode)replaceNode);
             }
         }
-
+        
         return replaceNode;
     }
     
@@ -112,7 +110,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
     protected Node rotateLeft(Node node) {
         Node temp = node.right;
         temp.parent = node.parent;
-
+        
         node.right = temp.left;
         if (node.right != nilNode) {
             node.right.parent = node;
@@ -123,7 +121,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
 
         // temp took over node's place so now its parent should point to temp
         if (temp.parent != nilNode) {
-            if (node.equals(temp.parent.left)) {
+            if (node == temp.parent.left) {
                 temp.parent.left = temp;
             } else {
                 temp.parent.right = temp;
@@ -153,7 +151,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
 
         // temp took over node's place so now its parent should point to temp
         if (temp.parent != nilNode) {
-            if (node.equals(temp.parent.left)) {
+            if (node == temp.parent.left) {
                 temp.parent.left = temp;
             } else {
                 temp.parent.right = temp;
@@ -184,59 +182,76 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
     /**
      * Restores Red-Black tree properties after delete if needed.
      */
-    private void deleteRBFixup(RedBlackNode currentNode) {
-        while (currentNode != root && currentNode.color == ColorEnum.BLACK) {
+    private void deleteRBFixup(RedBlackNode x) {
+        while (x != root && isBlack(x)) {
             
-            if (currentNode == currentNode.parent.left) {
-                RedBlackNode sibling = (RedBlackNode)currentNode.parent.right;
-                if (sibling.color == ColorEnum.RED) { // case 1 - sibling is red
-                    sibling.color = ColorEnum.BLACK;
-                    ((RedBlackNode)currentNode.parent).color = ColorEnum.RED;
-                    rotateLeft(currentNode.parent);
-                    sibling = (RedBlackNode)currentNode.parent.right; // converted to case 2, 3 or 4
+            if (x == x.parent.left) {
+                RedBlackNode w = (RedBlackNode)x.parent.right;
+                if (isRed(w)) { // case 1 - sibling is red
+                    w.color = ColorEnum.BLACK;
+                    ((RedBlackNode)x.parent).color = ColorEnum.RED;
+                    rotateLeft(x.parent);
+                    w = (RedBlackNode)x.parent.right; // converted to case 2, 3 or 4
                 }
                 // case 2 sibling is black and both of its children are black
-                if (((RedBlackNode)sibling.left).color == ColorEnum.BLACK && ((RedBlackNode)sibling.right).color == ColorEnum.BLACK) {
-                    sibling.color = ColorEnum.RED;
-                    currentNode = (RedBlackNode)currentNode.parent;
-                } else if (((RedBlackNode)sibling.right).color == ColorEnum.BLACK) { // case 3 sibling is black and its left child is red and right child is black
-                    ((RedBlackNode)sibling.left).color = ColorEnum.BLACK;
-                    sibling.color = ColorEnum.RED;
-                    rotateRight(sibling);
-                    sibling = (RedBlackNode)currentNode.parent.right;
-                } else if (((RedBlackNode)sibling.right).color == ColorEnum.RED) { // case 4 sibling is black and right child is red
-                    sibling.color = ((RedBlackNode)currentNode.parent).color;
-                    ((RedBlackNode)currentNode.parent).color = ColorEnum.BLACK;
-                    ((RedBlackNode)sibling.right).color = ColorEnum.BLACK;
-                    rotateLeft(currentNode.parent);
-                    currentNode = (RedBlackNode)root;
+                if (isBlack(w.left) && isBlack(w.right)) {
+                    w.color = ColorEnum.RED;
+                    x = (RedBlackNode)x.parent;
+                } else if (w != nilNode) {
+                    if (isBlack(w.right)) { // case 3 sibling is black and its left child is red and right child is black
+                        ((RedBlackNode)w.left).color = ColorEnum.BLACK;
+                        w.color = ColorEnum.RED;
+                        rotateRight(w);
+                        w = (RedBlackNode)x.parent.right;
+                    }
+                    w.color = ((RedBlackNode)x.parent).color; // case 4 sibling is black and right child is red
+                    ((RedBlackNode)x.parent).color = ColorEnum.BLACK;
+                    ((RedBlackNode)w.right).color = ColorEnum.BLACK;
+                    rotateLeft(x.parent);
+                    x = (RedBlackNode)root;
+                } else {
+                    x.color = ColorEnum.BLACK;
+                    x = (RedBlackNode)x.parent;
                 }
             } else {
-                RedBlackNode sibling = (RedBlackNode)currentNode.parent.left;
-                if (sibling.color == ColorEnum.RED) { // case 1 - sibling is red
-                    sibling.color = ColorEnum.BLACK;
-                    ((RedBlackNode)currentNode.parent).color = ColorEnum.RED;
-                    sibling = (RedBlackNode)currentNode.parent.left; // converted to case 2, 3 or 4
+                RedBlackNode w = (RedBlackNode)x.parent.left;
+                if (isRed(w)) { // case 1 - sibling is red
+                    w.color = ColorEnum.BLACK;
+                    ((RedBlackNode)x.parent).color = ColorEnum.RED;
+                    rotateRight(x.parent);
+                    w = (RedBlackNode)x.parent.left; // converted to case 2, 3 or 4
                 }
                 // case 2 sibling is black and both of its children are black
-                if (((RedBlackNode)sibling.left).color == ColorEnum.BLACK && ((RedBlackNode)sibling.right).color == ColorEnum.BLACK) {
-                    sibling.color = ColorEnum.RED;
-                    currentNode = (RedBlackNode)currentNode.parent;
-                }  else if (((RedBlackNode)sibling.left).color == ColorEnum.BLACK) { // case 3 sibling is black and its right child is red and left child is black
-                    ((RedBlackNode)sibling.right).color = ColorEnum.BLACK;
-                    sibling.color = ColorEnum.RED;
-                    rotateLeft(sibling);
-                    sibling = (RedBlackNode)currentNode.parent.left;
-                } else if (((RedBlackNode)sibling.left).color == ColorEnum.RED) { // case 4 sibling is black and left child is red
-                    sibling.color = ((RedBlackNode)currentNode.parent).color;
-                    ((RedBlackNode)currentNode.parent).color = ColorEnum.BLACK;
-                    ((RedBlackNode)sibling.left).color = ColorEnum.BLACK;
-                    rotateRight(currentNode.parent);
-                    currentNode = (RedBlackNode)root;
+                if (isBlack(w.left) && isBlack(w.right)) {
+                    w.color = ColorEnum.RED;
+                    x = (RedBlackNode)x.parent;
+                } else if (w != nilNode) {
+                    if (isBlack(w.left)) { // case 3 sibling is black and its right child is red and left child is black
+                        ((RedBlackNode)w.right).color = ColorEnum.BLACK;
+                        w.color = ColorEnum.RED;
+                        rotateLeft(w);
+                        w = (RedBlackNode)x.parent.left;
+                    }
+                    w.color = ((RedBlackNode)x.parent).color; // case 4 sibling is black and left child is red
+                    ((RedBlackNode)x.parent).color = ColorEnum.BLACK;
+                    ((RedBlackNode)w.left).color = ColorEnum.BLACK;
+                    rotateRight(x.parent);
+                    x = (RedBlackNode)root;
+                } else {
+                    x.color = ColorEnum.BLACK;
+                    x = (RedBlackNode)x.parent;
                 }
             }
             
         }
+    }
+    
+    private boolean isBlack(Node node) {
+        return node != null ? ((RedBlackNode)node).color == ColorEnum.BLACK : false;
+    }
+    
+    private boolean isRed(Node node) {
+        return node != null ? ((RedBlackNode)node).color == ColorEnum.RED : false;
     }
 
     /**
@@ -247,10 +262,10 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
     private void insertRBFixup(RedBlackNode currentNode) {
         // current node is always RED, so if its parent is red it breaks
         // Red-Black property, otherwise no fixup needed and loop can terminate
-        while (((RedBlackNode) currentNode.parent).color == ColorEnum.RED) {
+        while (currentNode.parent != root && ((RedBlackNode) currentNode.parent).color == ColorEnum.RED) {
             RedBlackNode parent = (RedBlackNode) currentNode.parent;
             RedBlackNode grandParent = (RedBlackNode) parent.parent;
-            if (parent.equals(grandParent.left)) {
+            if (parent == grandParent.left) {
                 RedBlackNode uncle = (RedBlackNode) grandParent.right;
                 // case1 - uncle and parent are both red
                 // re color both of them to black
@@ -264,10 +279,8 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
                 } 
                 // case 2/3 uncle is black - then we perform rotations
                 else {
-                    if (currentNode.equals(parent.right)) { // case 2, first rotate left
+                    if (currentNode == parent.right) { // case 2, first rotate left
                         currentNode = parent;
-                        parent = (RedBlackNode) currentNode.parent;
-                        grandParent = (RedBlackNode) parent.parent;
                         rotateLeft(currentNode);
                     }
                     // do not use parent
@@ -275,7 +288,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
                     grandParent.color = ColorEnum.RED;
                     rotateRight(grandParent);
                 }
-            } else if (parent.equals(grandParent.right)) {
+            } else if (parent == grandParent.right) {
                 RedBlackNode uncle = (RedBlackNode) grandParent.left;
                 // case1 - uncle and parent are both red
                 // re color both of them to black
@@ -289,10 +302,8 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
                 }
                 // case 2/3 uncle is black - then we perform rotations
                 else {
-                    if (currentNode.equals(parent.left)) { // case 2, first rotate right
+                    if (currentNode == parent.left) { // case 2, first rotate right
                         currentNode = parent;
-                        parent = (RedBlackNode) currentNode.parent;
-                        grandParent = (RedBlackNode) parent.parent;
                         rotateRight(currentNode);
                     }
                     // do not use parent

@@ -11,7 +11,7 @@ package org.intelligentjava.algos.trees;
 public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBinarySearchTree {
 
     /**
-     * Rotate to the right.
+     * Rotate to the left.
      * 
      * @param node Node on which to rotate.
      * @return Node that is in place of provided node after rotation.
@@ -30,7 +30,7 @@ public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBina
 
         // temp took over node's place so now its parent should point to temp
         if (temp.parent != null) {
-            if (node.equals(temp.parent.left)) {
+            if (node == temp.parent.left) {
                 temp.parent.left = temp;
             } else {
                 temp.parent.right = temp;
@@ -62,7 +62,7 @@ public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBina
 
         // temp took over node's place so now its parent should point to temp
         if (temp.parent != null) {
-            if (node.equals(temp.parent.left)) {
+            if (node == temp.parent.left) {
                 temp.parent.left = temp;
             } else {
                 temp.parent.right = temp;
