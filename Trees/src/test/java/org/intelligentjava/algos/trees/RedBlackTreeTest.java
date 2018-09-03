@@ -6,6 +6,9 @@ import org.intelligentjava.algos.trees.RedBlackTree.RedBlackNode;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 /**
  * Tests for Red-Black tree.
  * 
@@ -14,7 +17,17 @@ import org.junit.Test;
  *
  */
 public class RedBlackTreeTest {
-    
+    @Test
+    public void testInsertionFixupColoring() throws Exception {
+        RedBlackTree tree = new RedBlackTree();
+        Node node8 = tree.insert(8);
+        Node node3 = tree.insert(3);
+        Node node4 = tree.insert(4);
+        assertThat(((RedBlackNode)node3).color, equalTo(ColorEnum.RED));
+        assertThat(((RedBlackNode)node4).color, equalTo(ColorEnum.BLACK));
+        assertThat(((RedBlackNode)node8).color, equalTo(ColorEnum.RED));
+    }
+
     @Test
     public void testInsert() {
         RedBlackTree tree = new RedBlackTree();
@@ -33,7 +46,7 @@ public class RedBlackTreeTest {
         Assert.assertEquals(((RedBlackNode)tree.search(8)).color, ColorEnum.RED);
         tree.insert(9); // case 2/3 - rotation right, then left
         Assert.assertEquals(((RedBlackNode)tree.search(10)).color, ColorEnum.RED);
-        Assert.assertEquals(((RedBlackNode)tree.search(8)).color, ColorEnum.BLACK);
+        Assert.assertEquals(((RedBlackNode)tree.search(8)).color, ColorEnum.RED);
         Assert.assertEquals(((RedBlackNode)tree.search(9)).left.value, (Integer)8);
         
         // TODO test other red black tree properties too
