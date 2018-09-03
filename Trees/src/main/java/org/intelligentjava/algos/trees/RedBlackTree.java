@@ -282,6 +282,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
                     if (currentNode == parent.right) { // case 2, first rotate left
                         currentNode = parent;
                         rotateLeft(currentNode);
+                        parent = (RedBlackNode) currentNode.parent;
                     }
                     // do not use parent
                     parent.color = ColorEnum.BLACK; // case 3
@@ -305,6 +306,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
                     if (currentNode == parent.left) { // case 2, first rotate right
                         currentNode = parent;
                         rotateRight(currentNode);
+                        parent = (RedBlackNode) currentNode.parent;
                     }
                     // do not use parent
                     parent.color = ColorEnum.BLACK; // case 3
