@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests for AVL tree.
+ * Tests for AVL tree. 
  * 
  * @author Ignas Lelys
  * @created Jun 29, 2011
